@@ -1,4 +1,5 @@
 # PULLFROG ACTION — DO NOT EDIT EXCEPT WHERE INDICATED
+# reads branch from .branch file and builds action from that branch
 name: Pullfrog
 run-name: ${{ inputs.name || github.workflow }}
 on:
@@ -27,8 +28,37 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
+
+      - name: Read branch
+        id: config
+        run: |
+          if [ -f .branch ]; then
+            echo "branch=$(cat .branch)" >> $GITHUB_OUTPUT
+          else
+            echo "branch=main" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout pullfrog/app action
+        uses: actions/checkout@v6
+        with:
+          repository: pullfrog/app
+          ref: ${{ steps.config.outputs.branch }}
+          path: .pullfrog-action
+          token: ${{ secrets.GH_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Build action
+        working-directory: .pullfrog-action/action
+        run: |
+          pnpm install --frozen-lockfile --ignore-workspace
+          pnpm build
+
       - name: Run agent
-        uses: pullfrog/pullfrog@v0
+        uses: ./.pullfrog-action/action
         with:
           prompt: ${{ inputs.prompt }}
         env:
@@ -43,4 +73,3 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-
