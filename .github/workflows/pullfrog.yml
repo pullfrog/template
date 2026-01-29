@@ -1,5 +1,6 @@
 # PULLFROG ACTION — DO NOT EDIT EXCEPT WHERE INDICATED
 # reads branch from .branch file and builds action from that branch
+# pullfrog-sync: uses=./.pullfrog-action/action
 name: Pullfrog
 run-name: ${{ inputs.name || github.workflow }}
 on:
@@ -29,6 +30,7 @@ jobs:
         with:
           fetch-depth: 1
 
+      # pullfrog-sync: prepare-start
       - name: Read branch
         id: config
         run: |
@@ -57,6 +59,7 @@ jobs:
           pnpm install --frozen-lockfile --ignore-workspace
           pnpm build
 
+      # pullfrog-sync: prepare-end
       - name: Run agent
         uses: ./.pullfrog-action/action
         with:
