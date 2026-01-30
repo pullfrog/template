@@ -49,6 +49,9 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
 
       - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: .pullfrog-action/action/package.json
+
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
