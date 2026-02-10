@@ -45,22 +45,29 @@ jobs:
         with:
           repository: pullfrog/app
           ref: ${{ steps.config.outputs.branch }}
-          path: .pullfrog-action
+          path: /tmp/pullfrog-app
           token: ${{ secrets.GH_TOKEN }}
 
       - uses: pnpm/action-setup@v4
         with:
-          package_json_file: .pullfrog-action/action/package.json
+          package_json_file: /tmp/pullfrog-app/action/package.json
 
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
 
       - name: Build action
-        working-directory: .pullfrog-action/action
+        working-directory: /tmp/pullfrog-app/action
         run: |
           pnpm install --frozen-lockfile --ignore-workspace
           pnpm build
+
+      - name: Copy built action to workspace
+        run: |
+          mkdir -p .pullfrog-action/action
+          cp /tmp/pullfrog-app/action/action.yml .pullfrog-action/action/
+          cp /tmp/pullfrog-app/action/entry .pullfrog-action/action/
+          cp /tmp/pullfrog-app/action/post .pullfrog-action/action/
 
       # pullfrog-sync: prepare-end
       - name: Run agent
