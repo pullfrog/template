@@ -41,12 +41,10 @@ jobs:
           fi
 
       - name: Checkout pullfrog/app action
-        uses: actions/checkout@v6
-        with:
-          repository: pullfrog/app
-          ref: ${{ steps.config.outputs.branch }}
-          path: /tmp/pullfrog-app
-          token: ${{ secrets.GH_TOKEN }}
+        run: |
+          git clone --depth 1 --branch "${{ steps.config.outputs.branch }}" \
+            "https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/pullfrog/app.git" \
+            /tmp/pullfrog-app
 
       - uses: pnpm/action-setup@v4
         with:
