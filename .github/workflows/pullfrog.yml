@@ -48,9 +48,13 @@ jobs:
 
       - name: Checkout pullfrog/app action
         run: |
-          git clone --depth 1 --branch "${{ steps.config.outputs.branch }}" \
-            "https://x-access-token:${{ steps.token.outputs.token }}@github.com/pullfrog/app.git" \
-            /tmp/pullfrog-app
+          for i in 1 2 3; do
+            git clone --depth 1 --branch "${{ steps.config.outputs.branch }}" \
+              "https://x-access-token:${{ steps.token.outputs.token }}@github.com/pullfrog/app.git" \
+              /tmp/pullfrog-app && break
+            echo "Clone attempt $i failed, retrying in 5s..."
+            sleep 5
+          done
           echo "Checked out pullfrog/app at $(git -C /tmp/pullfrog-app rev-parse HEAD)"
 
       - uses: pnpm/action-setup@v4
