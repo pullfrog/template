@@ -80,6 +80,7 @@ jobs:
         with:
           prompt: ${{ inputs.prompt }}
         env:
+          API_URL: ${{ secrets.API_URL }}
           # add any additional keys your agent(s) need
           # optionally, comment out any you won't use
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
