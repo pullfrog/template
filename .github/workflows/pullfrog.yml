@@ -31,6 +31,12 @@ jobs:
           fetch-depth: 1
 
       # pullfrog-sync: prepare-start
+      - name: Get installation token
+        id: token
+        uses: pullfrog/pullfrog/get-installation-token@main
+        with:
+          repos: app
+
       - name: Read branch
         id: config
         run: |
@@ -43,7 +49,7 @@ jobs:
       - name: Checkout pullfrog/app action
         run: |
           git clone --depth 1 --branch "${{ steps.config.outputs.branch }}" \
-            "https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/pullfrog/app.git" \
+            "https://x-access-token:${{ steps.token.outputs.token }}@github.com/pullfrog/app.git" \
             /tmp/pullfrog-app
 
       - uses: pnpm/action-setup@v4
