@@ -68,7 +68,7 @@ jobs:
       - name: Build action
         working-directory: /tmp/pullfrog-app/action
         run: |
-          pnpm install --frozen-lockfile --ignore-workspace
+          pnpm install --frozen-lockfile
           pnpm build
 
       - name: Copy built action to workspace
