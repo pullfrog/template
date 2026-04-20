@@ -75,8 +75,8 @@ jobs:
         run: |
           mkdir -p .pullfrog-action/action
           cp /tmp/pullfrog-app/action/action.yml .pullfrog-action/action/
-          cp /tmp/pullfrog-app/action/entry .pullfrog-action/action/
-          cp /tmp/pullfrog-app/action/post .pullfrog-action/action/
+          cp /tmp/pullfrog-app/action/entry.ts .pullfrog-action/action/
+          cp /tmp/pullfrog-app/action/post.ts .pullfrog-action/action/
 
       # pullfrog-sync: prepare-end
       - name: Run agent
