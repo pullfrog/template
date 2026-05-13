@@ -106,3 +106,6 @@ jobs:
           AWS_BEARER_TOKEN_BEDROCK: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
           AWS_REGION: us-east-1
           BEDROCK_MODEL_ID: us.anthropic.claude-opus-4-6-v1
+          # escape hatches for ad-hoc e2e overrides via repo Actions variables
+          PULLFROG_MODEL: ${{ vars.PULLFROG_MODEL }}
+          PULLFROG_AGENT: ${{ vars.PULLFROG_AGENT }}
