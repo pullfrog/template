@@ -100,12 +100,13 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           # Amazon Bedrock — bearer token inherited from pullfrog org secrets
-          # (visibility: all). region + model id are non-sensitive config; edit
-          # the preview repo's pullfrog.yml in-place to test other regions or
-          # model ids. see https://docs.pullfrog.com/bedrock.
+          # (visibility: all). region + model id are non-sensitive config and
+          # default to Opus 4.6 (US); override per preview repo via
+          # `gh variable set <NAME> -R pullfrog/preview-<PR>-<branch>` when
+          # testing other regions or model ids. see https://docs.pullfrog.com/bedrock.
           AWS_BEARER_TOKEN_BEDROCK: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
-          AWS_REGION: us-east-1
-          BEDROCK_MODEL_ID: us.anthropic.claude-opus-4-6-v1
+          AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+          BEDROCK_MODEL_ID: ${{ vars.BEDROCK_MODEL_ID || 'us.anthropic.claude-opus-4-6-v1' }}
           # escape hatches for ad-hoc e2e overrides via repo Actions variables
           PULLFROG_MODEL: ${{ vars.PULLFROG_MODEL }}
           PULLFROG_AGENT: ${{ vars.PULLFROG_AGENT }}
