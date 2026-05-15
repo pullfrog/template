@@ -107,6 +107,14 @@ jobs:
           AWS_BEARER_TOKEN_BEDROCK: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
           AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
           BEDROCK_MODEL_ID: ${{ vars.BEDROCK_MODEL_ID || 'us.anthropic.claude-opus-4-6-v1' }}
+          # Google Vertex AI — service account JSON inherited from pullfrog org secrets
+          # (visibility: all). project/location/model id are non-sensitive config and
+          # default to pullfrog/global/Gemini Flash; override per preview repo via
+          # `gh variable set <NAME> -R pullfrog/preview-<PR>-<branch>` when needed.
+          VERTEX_SERVICE_ACCOUNT_JSON: ${{ secrets.VERTEX_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_CLOUD_PROJECT: ${{ vars.GOOGLE_CLOUD_PROJECT || 'pullfrog' }}
+          VERTEX_LOCATION: ${{ vars.VERTEX_LOCATION || 'global' }}
+          VERTEX_MODEL_ID: ${{ vars.VERTEX_MODEL_ID || 'gemini-2.5-flash' }}
           # escape hatches for ad-hoc e2e overrides via repo Actions variables
           PULLFROG_MODEL: ${{ vars.PULLFROG_MODEL }}
           PULLFROG_AGENT: ${{ vars.PULLFROG_AGENT }}
