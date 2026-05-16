@@ -11,10 +11,10 @@ on:
         description: Agent prompt
       name:
         type: string
+        description: Run name
       overrides:
         type: string
         description: 'JSON env var overrides for this run (e2e/debug; e.g. {"ACTIONS_STEP_DEBUG":"true"})'
-        description: Run name
 
 permissions:
   id-token: write
