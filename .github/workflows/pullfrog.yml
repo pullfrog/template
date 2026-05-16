@@ -85,8 +85,9 @@ jobs:
         uses: ./.pullfrog-action/action
         with:
           prompt: ${{ inputs.prompt }}
-          overrides: ${{ inputs.overrides }}
         env:
+          # per-dispatch env mutation — see wiki/e2e-testing.md
+          PULLFROG_OVERRIDES: ${{ inputs.overrides }}
           # force local action execution so the PR branch's source is exercised
           # instead of the published npm fallback (see AGENTS.md, wiki/preview-repo.md)
           PULLFROG_FORCE_LOCAL_CLI: "1"
