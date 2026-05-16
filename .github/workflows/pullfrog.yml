@@ -11,6 +11,9 @@ on:
         description: Agent prompt
       name:
         type: string
+      overrides:
+        type: string
+        description: 'JSON env var overrides for this run (e2e/debug; e.g. {"ACTIONS_STEP_DEBUG":"true"})'
         description: Run name
 
 permissions:
@@ -82,6 +85,7 @@ jobs:
         uses: ./.pullfrog-action/action
         with:
           prompt: ${{ inputs.prompt }}
+          overrides: ${{ inputs.overrides }}
         env:
           # force local action execution so the PR branch's source is exercised
           # instead of the published npm fallback (see AGENTS.md, wiki/preview-repo.md)
@@ -118,3 +122,4 @@ jobs:
           # escape hatches for ad-hoc e2e overrides via repo Actions variables
           PULLFROG_MODEL: ${{ vars.PULLFROG_MODEL }}
           PULLFROG_AGENT: ${{ vars.PULLFROG_AGENT }}
+
