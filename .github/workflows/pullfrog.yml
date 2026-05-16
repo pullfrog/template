@@ -12,9 +12,9 @@ on:
       name:
         type: string
         description: Run name
-      overrides:
+      unsafe_overrides:
         type: string
-        description: 'JSON env var overrides for this run (e2e/debug; e.g. {"ACTIONS_STEP_DEBUG":"true"})'
+        description: 'JSON env overrides splatted into the action process. UNSAFE: echoed in plaintext in the step header. e2e/debug only.'
 
 permissions:
   id-token: write
@@ -87,7 +87,7 @@ jobs:
           prompt: ${{ inputs.prompt }}
         env:
           # per-dispatch env mutation — see wiki/e2e-testing.md
-          PULLFROG_OVERRIDES: ${{ inputs.overrides }}
+          UNSAFE_OVERRIDES: ${{ inputs.unsafe_overrides }}
           # force local action execution so the PR branch's source is exercised
           # instead of the published npm fallback (see AGENTS.md, wiki/preview-repo.md)
           PULLFROG_FORCE_LOCAL_CLI: "1"
