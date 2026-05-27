@@ -60,10 +60,6 @@ jobs:
           done
           echo "Checked out pullfrog/app at $(git -C /tmp/pullfrog-app rev-parse HEAD)"
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -71,6 +67,11 @@ jobs:
       - name: Build action
         working-directory: /tmp/pullfrog-app/action
         run: |
+          # use corepack to read pnpm version from the action repo's own
+          # package.json. avoids pnpm/action-setup, which only looks at
+          # the preview repo's package.json and breaks when it declares
+          # `packageManager`. see PR #844 e2e investigation.
+          corepack enable
           pnpm install --frozen-lockfile
           pnpm build
 
