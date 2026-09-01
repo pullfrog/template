@@ -34,12 +34,10 @@ jobs:
           fetch-depth: 1
 
       # pullfrog-sync: prepare-start
-      - name: Get installation token
-        id: token
-        uses: pullfrog/pullfrog/get-installation-token@main
-        with:
-          repos: app
-
+      # clone pullfrog/app with the forwarded GH_TOKEN rather than a cross-repo
+      # installation-token mint: since pullfrog/app#1272 those mints require an
+      # xrepo grant persisted at Pullfrog dispatch, which a preview repo's
+      # hand-dispatched run never has.
       - name: Read branch
         id: config
         run: |
@@ -53,7 +51,7 @@ jobs:
         run: |
           for i in 1 2 3; do
             git clone --depth 1 --branch "${{ steps.config.outputs.branch }}" \
-              "https://x-access-token:${{ steps.token.outputs.token }}@github.com/pullfrog/app.git" \
+              "https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/pullfrog/app.git" \
               /tmp/pullfrog-app && break
             echo "Clone attempt $i failed, retrying in 5s..."
             sleep 5
